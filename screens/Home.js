@@ -12,7 +12,9 @@ import PalettePreview from "../components/PalettePreview";
 
 const URL = "https://color-palette-api.kadikraman.now.sh/palettes";
 
-const Home = ({ navigation }) => {
+const Home = ({ navigation, route }) => {
+  const newPalette = route.params ? route.params.newPalette : null;
+
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [colorPalette, setColorPalette] = useState();
 
@@ -41,6 +43,12 @@ const Home = ({ navigation }) => {
     handleFetchColorPallets();
   }, [handleFetchColorPallets]);
 
+  useEffect(() => {
+    if (newPalette) {
+      setColorPalette((current) => [newPalette, ...current]);
+    }
+  }, [newPalette]);
+
   return (
     <>
       <TouchableOpacity
@@ -49,6 +57,7 @@ const Home = ({ navigation }) => {
       >
         <Text style={styles.buttonText}>Add a color scheme</Text>
       </TouchableOpacity>
+
       <FlatList
         style={styles.list}
         data={colorPalette}
@@ -74,5 +83,15 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     backgroundColor: "white",
+  },
+  button: {
+    height: 50,
+    backgroundColor: "white",
+    padding: 10,
+  },
+  buttonText: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "teal",
   },
 });
