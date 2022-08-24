@@ -4,36 +4,35 @@ import { NavigationContainer } from "@react-navigation/native";
 import Home from "./screens/Home";
 import ColorPalette from "./screens/ColorPalette";
 import { createStackNavigator } from "@react-navigation/stack";
-import FrontendMasters from "./screens/FrontendMasters";
-import Rainbow from "./screens/Rainbow";
+import AddNewPaletteModal from "./screens/AddNewPaletteModal";
 
-const Stack = createStackNavigator();
+const RootStack = createStackNavigator();
+const MainStack = createStackNavigator();
+
+const MainStackScreen = () => {
+  return (
+    <MainStack.Navigator>
+      <MainStack.Screen name="Home" component={Home} />
+      <MainStack.Screen
+        name="ColorPalette"
+        component={ColorPalette}
+        options={({ route }) => ({ title: route.params.paletteName })}
+      />
+    </MainStack.Navigator>
+  );
+};
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{ title: "Home" }}
+      <RootStack.Navigator screenOptions={{ presentation: "modal" }}>
+        <RootStack.Screen
+          name="Main"
+          component={MainStackScreen}
+          options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name="ColorPalette"
-          component={ColorPalette}
-          options={({ route }) => ({ title: route.params.paletteName })}
-        />
-        <Stack.Screen
-          name="FrontendMasters"
-          component={FrontendMasters}
-          options={{ title: "Frontend Masters" }}
-        />
-        <Stack.Screen
-          name="Rainbow"
-          component={Rainbow}
-          options={{ title: "Rainbow" }}
-        />
-      </Stack.Navigator>
+        <RootStack.Screen name="AddNewPalette" component={AddNewPaletteModal} />
+      </RootStack.Navigator>
     </NavigationContainer>
   );
 };

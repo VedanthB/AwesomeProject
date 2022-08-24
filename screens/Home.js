@@ -1,6 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
 
-import { FlatList, StyleSheet, RefreshControl } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  RefreshControl,
+  TouchableOpacity,
+  Text,
+} from "react-native";
 
 import PalettePreview from "../components/PalettePreview";
 
@@ -36,20 +42,28 @@ const Home = ({ navigation }) => {
   }, [handleFetchColorPallets]);
 
   return (
-    <FlatList
-      style={styles.list}
-      data={colorPalette}
-      keyExtractor={(item) => item.paletteName}
-      renderItem={({ item }) => (
-        <PalettePreview
-          onPress={() => navigation.push("ColorPalette", item)}
-          palette={item}
-        />
-      )}
-      refreshControl={
-        <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
-      }
-    />
+    <>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate("AddNewPalette")}
+      >
+        <Text style={styles.buttonText}>Add a color scheme</Text>
+      </TouchableOpacity>
+      <FlatList
+        style={styles.list}
+        data={colorPalette}
+        keyExtractor={(item) => item.paletteName}
+        renderItem={({ item }) => (
+          <PalettePreview
+            onPress={() => navigation.push("ColorPalette", item)}
+            palette={item}
+          />
+        )}
+        refreshControl={
+          <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
+        }
+      />
+    </>
   );
 };
 
